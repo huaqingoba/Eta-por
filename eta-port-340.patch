@@ -1,7 +1,7 @@
 From 1ee325515f0e598d5558a94716c30501872a5ddb Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:08:53 +0000
-Subject: [PATCH 01/14] =?UTF-8?q?port(KaTeX):=20=E6=8E=A5=E5=85=A5?=
+Subject: [PATCH 01/18] =?UTF-8?q?port(KaTeX):=20=E6=8E=A5=E5=85=A5?=
  =?UTF-8?q?=E5=9D=97=E7=BA=A7=E5=85=AC=E5=BC=8F=E7=A6=BB=E7=BA=BF=E6=B8=B2?=
  =?UTF-8?q?=E6=9F=93=E5=92=8C=E6=9C=AC=E5=9C=B0=E5=AD=97=E4=BD=93?=
 MIME-Version: 1.0
@@ -5496,7 +5496,7 @@ index 0000000..bd1d70c
 From f964505aa502246a4154d13eaec80ac8e4e32959 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:19:41 +0000
-Subject: [PATCH 02/14] =?UTF-8?q?port(=E4=BC=9A=E8=AF=9D=E5=AF=BC=E8=88=AA?=
+Subject: [PATCH 02/18] =?UTF-8?q?port(=E4=BC=9A=E8=AF=9D=E5=AF=BC=E8=88=AA?=
  =?UTF-8?q?):=20=E6=8E=A5=E5=85=A5=E4=B8=8A=E6=BB=91=E7=9B=AE=E5=BD=95?=
  =?UTF-8?q?=E6=90=9C=E7=B4=A2=E5=B9=B6=E9=80=82=E9=85=8D=E5=8E=86=E5=8F=B2?=
  =?UTF-8?q?=E5=88=86=E9=A1=B5=E8=B7=B3=E8=BD=AC?=
@@ -6830,7 +6830,7 @@ index bd1d70c..4b94301 100644
 From 9ae4e24609c308abef567738d510d26c09aa2164 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:28:07 +0000
-Subject: [PATCH 03/14] =?UTF-8?q?port(=E4=BC=9A=E8=AF=9D=E5=88=86=E7=B1=BB?=
+Subject: [PATCH 03/18] =?UTF-8?q?port(=E4=BC=9A=E8=AF=9D=E5=88=86=E7=B1=BB?=
  =?UTF-8?q?):=20=E6=8E=A5=E5=85=A5=E5=88=86=E7=B1=BB=E7=AE=A1=E7=90=86?=
  =?UTF-8?q?=E4=B8=8E=E4=BC=9A=E8=AF=9D=E5=BD=92=E5=B1=9E=E5=B9=B6=E7=BB=AD?=
  =?UTF-8?q?=E6=8E=A5=2023=E2=86=9224=20=E8=BF=81=E7=A7=BB?=
@@ -8587,7 +8587,7 @@ index 6d6930f..60d7245 100644
 From d4cd900859c82276b8efa4a1761bbc2292a1a8f8 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:32:11 +0000
-Subject: [PATCH 04/14] =?UTF-8?q?port(=E6=96=9C=E6=9D=A0=E5=91=BD=E4=BB=A4?=
+Subject: [PATCH 04/18] =?UTF-8?q?port(=E6=96=9C=E6=9D=A0=E5=91=BD=E4=BB=A4?=
  =?UTF-8?q?):=20=E6=8E=A5=E5=85=A5=E5=8F=AF=E9=80=89=E5=91=BD=E4=BB=A4?=
  =?UTF-8?q?=E9=9D=A2=E6=9D=BF=E4=B8=8E=E6=98=BE=E5=BC=8F=E6=8A=80=E8=83=BD?=
  =?UTF-8?q?=E8=B0=83=E7=94=A8?=
@@ -10304,7 +10304,7 @@ index 60d7245..db31ca7 100644
 From 2b14ffaa2154f859ce9097fafaf63ee103d07919 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:36:39 +0000
-Subject: [PATCH 05/14] =?UTF-8?q?port(=E5=B7=A5=E4=BD=9C=E5=8C=BA=E6=96=87?=
+Subject: [PATCH 05/18] =?UTF-8?q?port(=E5=B7=A5=E4=BD=9C=E5=8C=BA=E6=96=87?=
  =?UTF-8?q?=E4=BB=B6=E9=A1=B5):=20=E6=8E=A5=E5=85=A5=E6=96=87=E4=BB=B6?=
  =?UTF-8?q?=E6=A0=91=E9=A2=84=E8=A7=88=E4=B8=8E=E6=89=93=E5=BC=80=E6=96=B9?=
  =?UTF-8?q?=E5=BC=8F=E5=B9=B6=E9=80=82=E9=85=8D=E4=B8=8A=E6=B8=B8=E5=AD=98?=
@@ -11816,7 +11816,7 @@ index 0000000..1480603
 From 9b2ce23cb91397da1a6a9ae1ddef51e53242addd Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sat, 7 Nov 2026 18:43:06 +0000
-Subject: [PATCH 06/14] =?UTF-8?q?port(Markdown=E6=96=87=E4=BB=B6=E5=8D=A1?=
+Subject: [PATCH 06/18] =?UTF-8?q?port(Markdown=E6=96=87=E4=BB=B6=E5=8D=A1?=
  =?UTF-8?q?=E7=89=87):=20=E6=8E=A5=E5=85=A5=E6=96=87=E4=BB=B6=E9=A2=84?=
  =?UTF-8?q?=E8=A7=88=E4=B8=8E=E5=BA=94=E7=94=A8=E5=86=85=E7=BC=96=E8=BE=91?=
  =?UTF-8?q?=E4=BF=9D=E5=AD=98?=
@@ -12680,7 +12680,7 @@ index 0000000..526be6f
 From 4c1747f01bce04ded58c5fc1843a2c4ade01f2e3 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 05:19:17 +0000
-Subject: [PATCH 07/14] =?UTF-8?q?fix(port):=20=E8=A1=A5=E9=BD=90=20Compose?=
+Subject: [PATCH 07/18] =?UTF-8?q?fix(port):=20=E8=A1=A5=E9=BD=90=20Compose?=
  =?UTF-8?q?=20=E5=B1=9E=E6=80=A7=E5=A7=94=E6=89=98=E7=9A=84=20getValue/set?=
  =?UTF-8?q?Value=20import?=
 MIME-Version: 1.0
@@ -12724,7 +12724,7 @@ index 8293623..e17a42c 100644
 From a4e761a59c1520c7f3310e35bbf7276237081166 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 05:44:50 +0000
-Subject: [PATCH 08/14] =?UTF-8?q?port(=E4=B8=8A=E4=B8=8B=E6=96=87=E9=9D=A2?=
+Subject: [PATCH 08/18] =?UTF-8?q?port(=E4=B8=8A=E4=B8=8B=E6=96=87=E9=9D=A2?=
  =?UTF-8?q?=E6=9D=BF):=20=E6=8E=A5=E5=85=A5=E4=B8=89=E6=AE=B5=E7=94=A8?=
  =?UTF-8?q?=E9=87=8F=E4=BC=B0=E7=AE=97=E4=B8=8E=E5=8E=8B=E7=BC=A9=E5=85=A5?=
  =?UTF-8?q?=E5=8F=A3=E5=B9=B6=E7=BB=AD=E6=8E=A5=E5=AD=98=E5=82=A8=E8=BF=81?=
@@ -13749,7 +13749,7 @@ index fe30443..4d82f34 100644
 From 9940e0a45c61bb137fe630bc9796495c87ca4442 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 05:47:05 +0000
-Subject: [PATCH 09/14] =?UTF-8?q?port(Token=E7=94=A8=E9=87=8F=E9=9D=A2?=
+Subject: [PATCH 09/18] =?UTF-8?q?port(Token=E7=94=A8=E9=87=8F=E9=9D=A2?=
  =?UTF-8?q?=E6=9D=BF):=20=E6=8E=A5=E5=85=A5=E6=95=B4=E8=BD=AE=E7=BC=93?=
  =?UTF-8?q?=E5=AD=98=E4=B8=8E=E8=80=97=E6=97=B6=E7=BB=9F=E8=AE=A1=E5=8F=8A?=
  =?UTF-8?q?=20tok/s=20=E5=85=A5=E5=8F=A3?=
@@ -14487,7 +14487,7 @@ index 4d82f34..aba7416 100644
 From a700900ccc619feb3ba9deee2d8891cf24b8b1ea Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 05:50:03 +0000
-Subject: [PATCH 10/14] =?UTF-8?q?port(=E6=B5=81=E4=BD=93=E4=BA=91=E5=AE=9E?=
+Subject: [PATCH 10/18] =?UTF-8?q?port(=E6=B5=81=E4=BD=93=E4=BA=91=E5=AE=9E?=
  =?UTF-8?q?=E6=97=B6=E6=B4=BB=E5=8A=A8):=20=E9=80=82=E9=85=8D=E7=8E=B0?=
  =?UTF-8?q?=E6=9C=89=E6=89=A7=E8=A1=8C=E9=80=9A=E7=9F=A5=E5=B9=B6=E6=94=AF?=
  =?UTF-8?q?=E6=8C=81=E7=A9=BA=E9=97=B2=E5=B8=B8=E9=A9=BB=E4=B8=8E=E5=9B=9E?=
@@ -14951,7 +14951,7 @@ index aba7416..aaa6a91 100644
 From 2f9b354dcc67d52f13c96e2fc4d38814bf2ed6b3 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 05:54:50 +0000
-Subject: [PATCH 11/14] =?UTF-8?q?port(=E6=82=AC=E6=B5=AE=E8=83=B6=E5=9B=8A?=
+Subject: [PATCH 11/18] =?UTF-8?q?port(=E6=82=AC=E6=B5=AE=E8=83=B6=E5=9B=8A?=
  =?UTF-8?q?):=20=E6=8E=A5=E5=85=A5=E5=B8=B8=E9=A9=BB=E4=B8=8E=E6=B5=81?=
  =?UTF-8?q?=E4=BD=93=E4=BA=91=E7=8B=AC=E5=8D=A0=E8=AE=BE=E7=BD=AE=E5=B9=B6?=
  =?UTF-8?q?=E6=94=B6=E8=B5=B7=E4=BD=8E=E9=A2=91=E7=8A=B6=E6=80=81?=
@@ -15517,7 +15517,7 @@ index aaa6a91..ee7de8e 100644
 From e7649b2ec13c31d464e59c5219ca99f7260613c8 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 06:08:53 +0000
-Subject: [PATCH 12/14] =?UTF-8?q?port(=E5=8F=91=E9=80=81=E6=8E=92=E9=98=9F?=
+Subject: [PATCH 12/18] =?UTF-8?q?port(=E5=8F=91=E9=80=81=E6=8E=92=E9=98=9F?=
  =?UTF-8?q?):=20=E6=8E=A5=E5=85=A5=E7=82=B9=E5=87=BB=E6=8F=92=E9=98=9F?=
  =?UTF-8?q?=E4=B8=8E=E9=95=BF=E6=8C=89=E6=8E=92=E9=98=9F=E5=B9=B6=E5=AE=8C?=
  =?UTF-8?q?=E6=88=90=E7=AC=AC=E4=B8=89=E6=89=B9=E9=9D=99=E6=80=81=E6=A0=B8?=
@@ -16852,7 +16852,7 @@ index 0000000..92ae3e5
 From 3b8b5a7a4395943a62ea5dfe2d9b0a3081c4cda6 Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 06:17:00 +0000
-Subject: [PATCH 13/14] feat(approval): gate dangerous tools with persistent
+Subject: [PATCH 13/18] feat(approval): gate dangerous tools with persistent
  inline approval cards
 
 ---
@@ -18028,7 +18028,7 @@ index 0000000..e13780d
 From c4f8f18a017fd2297e938d2d85e5101d205b160e Mon Sep 17 00:00:00 2001
 From: porter <port@local>
 Date: Sun, 8 Nov 2026 06:30:47 +0000
-Subject: [PATCH 14/14] feat(ask): add inline user questions, answer revisions
+Subject: [PATCH 14/18] feat(ask): add inline user questions, answer revisions
  and throttled reminders
 
 ---
@@ -19045,6 +19045,466 @@ index 0000000..a55f656
 +print(f"{len(old_migrations)} existing migrations unchanged; 26→27 SQL and expiry boundary checked (not Room)")
 +subprocess.run(["git", "diff", "--check", BASE], cwd=ROOT, check=True)
 +print("Static checks passed. Kotlin/Compose, Room, Runtime and notification delivery still need CI/device validation.")
+-- 
+2.47.3
+
+From f1b027d9904f91add78aca2d10e791f8b21050a8 Mon Sep 17 00:00:00 2001
+From: porter <port@local>
+Date: Sun, 8 Nov 2026 14:49:32 +0000
+Subject: [PATCH 15/18] fix(approval): block broad recursive forced deletes
+ after directory changes
+
+---
+ .../eta/agent/interaction/ApprovalPolicy.kt   | 13 ++++++++++++-
+ .../agent/interaction/ApprovalPolicyTest.kt   | 19 ++++++++++++++++++-
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+index 295444b..5a2db4c 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+@@ -28,6 +28,11 @@ internal object ApprovalPolicy {
+             .flatMap { listOf(";") + shellTokens(it) }
+         fun base(token: String) = token.substringAfterLast('/')
+         fun segment(index: Int) = tokens.drop(index + 1).takeWhile { it !in setOf(";", "&", "|", "\n") }
++        fun changedDirectoryBefore(index: Int) = (0 until index).any { i ->
++            base(tokens[i]) == "cd" && segment(i).firstOrNull { !it.startsWith('-') }?.let {
++                it.startsWith('/') || ".." in it
++            } == true
++        }
+         val categories = buildList {
+             if (tokens.indices.any { i -> base(tokens[i]).startsWith("mkfs") }) add("format_disk")
+             if (tokens.indices.any { i ->
+@@ -35,7 +40,13 @@ internal object ApprovalPolicy {
+                     val flags = tail.filter { it.startsWith('-') }
+                     val recursive = flags.any { it == "--recursive" || (!it.startsWith("--") && 'r' in it.lowercase()) }
+                     val force = flags.any { it == "--force" || (!it.startsWith("--") && 'f' in it) }
+-                    recursive && force && tail.any { it.matches(Regex("/+(?:\\*|\\.(/?))?")) }
++                    // A prior cd can turn ordinary relative operands into broad deletions.
++                    // Keep this conservative; do not try to resolve the shell's working directory.
++                    val changedDirectory = changedDirectoryBefore(i)
++                    recursive && force && tail.any { target ->
++                        target.startsWith('/') || target in setOf("*", ".*") || ".." in target ||
++                            (changedDirectory && !target.startsWith('-'))
++                    }
+                 }
+             }) add("delete_root")
+             if (tokens.indices.any { i -> base(tokens[i]) == "pm" && "clear" in segment(i) }) add("clear_app")
+diff --git a/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt b/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
+index c0a4387..0176022 100644
+--- a/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
++++ b/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
+@@ -18,7 +18,24 @@ class ApprovalPolicyTest {
+             "mv file /system/etc/file -f", "cp file '/system/a b'").forEach { command ->
+             assertNotNull(command, ApprovalPolicy.terminal("terminal", JSONObject().put("command", command)))
+         }
+-        listOf("ls /system", "cp /system/build.prop /tmp/copy", "rm -rf /tmp/cache", "echo ok").forEach { command ->
++        listOf("ls /system", "cp /system/build.prop /tmp/copy", "rm -rf cache", "echo ok").forEach { command ->
++            assertNull(command, ApprovalPolicy.terminal("terminal", JSONObject().put("command", command)))
++        }
++    }
++
++    @Test fun recursiveForcedDeletesUseConservativeTargetsAndDirectoryChanges() {
++        listOf(
++            "cd / && rm -rf *", "rm -rf ../", "rm -rf /tmp/cache", "rm -rf /.",
++            "rm -rf *", "rm -rf .*", "rm -rf cache/../data", "rm -rf name..backup",
++            "rm -r -f ../", "rm --recursive --force ../", "rm -Rf ../",
++            "cd /; rm -rf cache", "cd .. && rm -fr ./cache", "cd /x || rm -rf cache*",
++            "cd -P /x; rm --recursive --force cache", "sh -c 'cd /x && rm -rf cache'",
++        ).forEach { command ->
++            assertEquals(command, "delete_root",
++                ApprovalPolicy.terminal("terminal", JSONObject().put("command", command))?.category)
++        }
++        listOf("rm -r ../", "rm -f ../", "rm -rf cache", "rm -rf cache; cd /",
++            "cd cache && rm -rf file").forEach { command ->
+             assertNull(command, ApprovalPolicy.terminal("terminal", JSONObject().put("command", command)))
+         }
+     }
+-- 
+2.47.3
+
+From 1411feb8513d2e90c85f767f2889ec20dfba6f33 Mon Sep 17 00:00:00 2001
+From: porter <port@local>
+Date: Sun, 8 Nov 2026 14:50:58 +0000
+Subject: [PATCH 16/18] fix(approval): detect command substitutions and add raw
+ rm fallback
+
+---
+ .../eta/agent/interaction/ApprovalPolicy.kt   | 17 +++++++---
+ .../agent/interaction/ApprovalPolicyTest.kt   | 34 +++++++++++++++++++
+ 2 files changed, 47 insertions(+), 4 deletions(-)
+
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+index 5a2db4c..8c91a7e 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+@@ -18,6 +18,12 @@ internal object ApprovalPolicy {
+     val guiTools = setOf("tap", "tap_area", "tap_element", "long_press", "long_press_element",
+         "type_text", "input_text", "replace_text", "paste_text", "clear_text", "press_key")
+ 
++    // Inspect the original text independently of quoting/tokenization. Literal examples may
++    // also match: broad approval is preferable to missing a destructive command substitution.
++    private val rawRecursiveForcedDelete = Regex(
++        """\brm\s+(?=(?:-[A-Za-z]+\s+)*-[A-Za-z]*[rR])(?=(?:-[A-Za-z]+\s+)*-[A-Za-z]*f)(?:-[A-Za-z]+\s+)+(?:--\s+)?["']?/\*?""",
++    )
++
+     fun terminal(name: String, args: JSONObject): ApprovalRisk? {
+         if (name !in setOf("terminal", "terminal_job", "terminal_daemon")) return null
+         val command = args.optString("command")
+@@ -27,15 +33,14 @@ internal object ApprovalPolicy {
+         val tokens = outer + outer.filter { token -> token.any(Char::isWhitespace) }
+             .flatMap { listOf(";") + shellTokens(it) }
+         fun base(token: String) = token.substringAfterLast('/')
+-        fun segment(index: Int) = tokens.drop(index + 1).takeWhile { it !in setOf(";", "&", "|", "\n") }
++        fun segment(index: Int) = tokens.drop(index + 1).takeWhile { it !in setOf(";", "&", "|", "\n", "$(", ")", "`") }
+         fun changedDirectoryBefore(index: Int) = (0 until index).any { i ->
+             base(tokens[i]) == "cd" && segment(i).firstOrNull { !it.startsWith('-') }?.let {
+                 it.startsWith('/') || ".." in it
+             } == true
+         }
+         val categories = buildList {
+-            if (tokens.indices.any { i -> base(tokens[i]).startsWith("mkfs") }) add("format_disk")
+-            if (tokens.indices.any { i ->
++            if (rawRecursiveForcedDelete.containsMatchIn(command) || tokens.indices.any { i ->
+                 base(tokens[i]) == "rm" && segment(i).let { tail ->
+                     val flags = tail.filter { it.startsWith('-') }
+                     val recursive = flags.any { it == "--recursive" || (!it.startsWith("--") && 'r' in it.lowercase()) }
+@@ -49,6 +54,7 @@ internal object ApprovalPolicy {
+                     }
+                 }
+             }) add("delete_root")
++            if (tokens.indices.any { i -> base(tokens[i]).startsWith("mkfs") }) add("format_disk")
+             if (tokens.indices.any { i -> base(tokens[i]) == "pm" && "clear" in segment(i) }) add("clear_app")
+             if (tokens.indices.any { i ->
+                 tokens[i] in setOf(">", ">>") && tokens.getOrNull(i + 1)?.let(::systemPath) == true ||
+@@ -70,10 +76,13 @@ internal object ApprovalPolicy {
+         var quote: Char? = null
+         var escaped = false
+         fun flush() { if (token.isNotEmpty()) { add(token.toString()); token.setLength(0) } }
+-        for (char in command) {
++        for ((index, char) in command.withIndex()) {
+             when {
+                 escaped -> { if (char != '\n') token.append(char); escaped = false }
+                 char == '\\' && quote != '\'' -> escaped = true
++                char == '$' && command.getOrNull(index + 1) == '(' && quote != '\'' -> { flush(); add("$(") }
++                char == '(' && command.getOrNull(index - 1) == '$' && quote != '\'' -> Unit
++                char in ")`" && quote != '\'' -> { flush(); add(char.toString()) }
+                 quote != null -> if (char == quote) quote = null else token.append(char)
+                 char == '\'' || char == '"' -> quote = char
+                 char == '\n' -> { flush(); add(";") }
+diff --git a/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt b/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
+index 0176022..0fe0619 100644
+--- a/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
++++ b/app/src/test/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicyTest.kt
+@@ -46,6 +46,40 @@ class ApprovalPolicyTest {
+         assertNotEquals(single.classKey, combined.classKey)
+     }
+ 
++    @Test fun commandSubstitutionsExposeRecursiveForcedDeletes() {
++        listOf(
++            "echo \$(rm -rf /)", "echo `rm -rf /`", "echo \$(rm -fr /*)",
++            "echo \$(rm --recursive --force ../)", "echo `rm --recursive --force ../`",
++            "echo \$(rm -r -f ../)", "echo \"\$(rm --recursive --force ../)\"",
++            "echo \"`rm --recursive --force ../`\"",
++            "echo prefix\$(rm --recursive --force ../)suffix",
++            "sh -c 'echo \$(rm --recursive --force ../)'",
++            "echo \$(echo \$(rm --recursive --force ../))",
++        ).forEach { command ->
++            assertEquals(command, "delete_root",
++                ApprovalPolicy.terminal("terminal", JSONObject().put("command", command))?.category)
++        }
++        listOf("echo \$(rm -r ../)", "echo `rm -f ../`", "echo \$(rm -rf cache)").forEach { command ->
++            assertNull(command, ApprovalPolicy.terminal("terminal", JSONObject().put("command", command)))
++        }
++    }
++
++    @Test fun rawCommandFallbackDoesNotDependOnRmTokens() {
++        // The colon hides rm from base(token); the independent raw-text check still blocks it.
++        listOf(
++            "echo 'example:rm -rf /'", "echo 'example:rm -fr /*'",
++            "echo 'example:rm -r -f /'", "echo 'example:rm -f -r /*'",
++            "echo 'example:rm -Rf -- /'", "echo 'example:rm -vfr /'",
++            "mkfs.ext4 /dev/test; echo 'example:rm -rf /'",
++        ).forEach { command ->
++            assertEquals(command, "delete_root",
++                ApprovalPolicy.terminal("terminal", JSONObject().put("command", command))?.category)
++        }
++        listOf("echo 'example:rm -r /'", "echo 'example:rm -f /'").forEach { command ->
++            assertNull(command, ApprovalPolicy.terminal("terminal", JSONObject().put("command", command)))
++        }
++    }
++
+     @Test fun moneyNeverAcceptsCategoryRulesAndAmountChangesInvalidateApproval() {
+         fun payment(amount: String) = ApprovalPolicy.gui("tap_element", JSONObject(), "pay-button", "app:display=0",
+             "确认付款", false, true, amount)!!
+-- 
+2.47.3
+
+From 6e07690704b8f25cf540f9204e4133ea104cdf72 Mon Sep 17 00:00:00 2001
+From: porter <port@local>
+Date: Sun, 8 Nov 2026 14:52:53 +0000
+Subject: [PATCH 17/18] fix(ui): collapse approval previews and bound
+ interaction card height
+
+---
+ .../eta/ui/components/ToolInteractionCard.kt  | 62 +++++++++++++++----
+ app/src/main/res/values-b+zh+Hans/strings.xml |  2 +
+ app/src/main/res/values-b+zh+Hant/strings.xml |  2 +
+ app/src/main/res/values/strings.xml           |  2 +
+ 4 files changed, 56 insertions(+), 12 deletions(-)
+
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/components/ToolInteractionCard.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/components/ToolInteractionCard.kt
+index 4f57715..a92d207 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/components/ToolInteractionCard.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/components/ToolInteractionCard.kt
+@@ -1,9 +1,15 @@
+ package io.github.mangi.eta.ui.components
+ 
++import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.Arrangement
+ import androidx.compose.foundation.layout.Column
++import androidx.compose.foundation.layout.ExperimentalLayoutApi
++import androidx.compose.foundation.layout.FlowRow
+ import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.heightIn
+ import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.rememberScrollState
++import androidx.compose.foundation.verticalScroll
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+@@ -12,7 +18,11 @@ import androidx.compose.runtime.rememberCoroutineScope
+ import androidx.compose.runtime.setValue
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.platform.LocalDensity
++import androidx.compose.ui.platform.LocalWindowInfo
+ import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.semantics.Role
++import androidx.compose.ui.text.style.TextOverflow
+ import androidx.compose.ui.unit.dp
+ import io.github.mangi.eta.R
+ import io.github.mangi.eta.agent.runtime.AgentRuntimeClient
+@@ -28,12 +38,18 @@ import top.yukonga.miuix.kmp.basic.TextButton
+ import top.yukonga.miuix.kmp.squircle.squircleSurface
+ import top.yukonga.miuix.kmp.theme.MiuixTheme
+ 
++@OptIn(ExperimentalLayoutApi::class)
+ @Composable
+ internal fun ToolInteractionCard(message: ToolActivityMessageUi, card: JSONObject, modifier: Modifier = Modifier) {
+     val context = LocalContext.current
+     val scope = rememberCoroutineScope()
+     val id = card.optString("id")
+     val state = card.optString("state")
++    val question = card.optString("kind") == "question"
++    val maxCardHeight = (with(LocalDensity.current) {
++        LocalWindowInfo.current.containerSize.height.toDp()
++    } * 0.5f).coerceAtMost(360.dp)
++    val cardScrollState = rememberScrollState()
+     var sending by remember(id, state) { mutableStateOf(false) }
+     var failed by remember(id, state) { mutableStateOf(false) }
+     val active = message.status == ToolActivityStatusUi.Running && !sending
+@@ -48,10 +64,14 @@ internal fun ToolInteractionCard(message: ToolActivityMessageUi, card: JSONObjec
+             if (!accepted) { sending = false; failed = true }
+         }
+     }
+-    Column(modifier.fillMaxWidth().squircleSurface(color = MiuixTheme.colorScheme.surface, cornerRadius = 16.dp).padding(16.dp),
++    Column(modifier.fillMaxWidth()
++        .then(if (question) Modifier else Modifier.heightIn(max = maxCardHeight))
++        .squircleSurface(color = MiuixTheme.colorScheme.surface, cornerRadius = 16.dp)
++        .then(if (question) Modifier else Modifier.verticalScroll(cardScrollState))
++        .padding(16.dp),
+         verticalArrangement = Arrangement.spacedBy(8.dp)) {
+         // PORT-NEW: question cards share the same submission/IPC state as approvals.
+-        if (card.optString("kind") == "question") {
++        if (question) {
+             QuestionCardContent(card, active, submit)
+             if (failed) Text(stringResource(R.string.interaction_reply_failed))
+             return@Column
+@@ -59,18 +79,21 @@ internal fun ToolInteractionCard(message: ToolActivityMessageUi, card: JSONObjec
+         Text(stringResource(R.string.approval_title), style = MiuixTheme.textStyles.title2)
+         Text(stringResource(approvalCategoryLabel(card.optString("category"))))
+         Text(io.github.mangi.eta.agent.overlay.toolDisplayName(message.toolName), style = MiuixTheme.textStyles.body2)
+-        card.optString("preview").takeIf { it.isNotBlank() }?.let { Text(it) }
++        card.optString("preview").takeIf { it.isNotBlank() }?.let { ApprovalCommandPreview(id, it) }
+         when {
+             state == "waiting" && message.status == ToolActivityStatusUi.Running -> {
+-                TextButton(stringResource(R.string.approval_approve), enabled = active,
+-                    onClick = { submit(JSONObject().put("action", "approve")) })
+-                TextButton(stringResource(R.string.approval_reject), enabled = active,
+-                    onClick = { submit(JSONObject().put("action", "reject")) })
+-                TextButton(stringResource(R.string.approval_take_over), enabled = active,
+-                    onClick = { submit(JSONObject().put("action", "take_over")) })
+-                if (card.optBoolean("remember_class") && !card.optBoolean("financial")) {
+-                    TextButton(stringResource(R.string.approval_remember_class), enabled = active,
+-                        onClick = { submit(JSONObject().put("action", "remember_class")) })
++                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp),
++                    verticalArrangement = Arrangement.spacedBy(4.dp)) {
++                    TextButton(stringResource(R.string.approval_approve), enabled = active,
++                        onClick = { submit(JSONObject().put("action", "approve")) })
++                    TextButton(stringResource(R.string.approval_reject), enabled = active,
++                        onClick = { submit(JSONObject().put("action", "reject")) })
++                    TextButton(stringResource(R.string.approval_take_over), enabled = active,
++                        onClick = { submit(JSONObject().put("action", "take_over")) })
++                    if (card.optBoolean("remember_class") && !card.optBoolean("financial")) {
++                        TextButton(stringResource(R.string.approval_remember_class), enabled = active,
++                            onClick = { submit(JSONObject().put("action", "remember_class")) })
++                    }
+                 }
+             }
+             state == "taken_over" && message.status == ToolActivityStatusUi.Running -> {
+@@ -89,6 +112,21 @@ internal fun ToolInteractionCard(message: ToolActivityMessageUi, card: JSONObjec
+     }
+ }
+ 
++@Composable
++private fun ApprovalCommandPreview(id: String, preview: String) {
++    var expanded by remember(id, preview) { mutableStateOf(false) }
++    val scrollState = rememberScrollState()
++    val toggleLabel = stringResource(if (expanded) R.string.approval_preview_collapse else R.string.approval_preview_expand)
++    val text = if (expanded || preview.length <= 200) preview else preview.take(200) + "…"
++    Column(Modifier.fillMaxWidth().clickable(onClickLabel = toggleLabel, role = Role.Button) { expanded = !expanded },
++        verticalArrangement = Arrangement.spacedBy(4.dp)) {
++        Text(text, style = MiuixTheme.textStyles.body2,
++            modifier = if (expanded) Modifier.heightIn(max = 160.dp).verticalScroll(scrollState) else Modifier,
++            maxLines = if (expanded) Int.MAX_VALUE else 3, overflow = TextOverflow.Ellipsis)
++        Text(toggleLabel, style = MiuixTheme.textStyles.footnote1, color = MiuixTheme.colorScheme.primary)
++    }
++}
++
+ private fun approvalCategoryLabel(category: String): Int = when (category) {
+     "payment" -> R.string.approval_payment
+     "order" -> R.string.approval_order
+diff --git a/app/src/main/res/values-b+zh+Hans/strings.xml b/app/src/main/res/values-b+zh+Hans/strings.xml
+index f3dc7e2..29a9373 100644
+--- a/app/src/main/res/values-b+zh+Hans/strings.xml
++++ b/app/src/main/res/values-b+zh+Hans/strings.xml
+@@ -1602,6 +1602,8 @@
+ 
+     <!-- PORT-NEW: tool approval cards. -->
+     <string name="approval_title">需要你的批准</string>
++    <string name="approval_preview_expand">展开全文</string>
++    <string name="approval_preview_collapse">收起全文</string>
+     <string name="approval_approve">批准</string>
+     <string name="approval_reject">拒绝</string>
+     <string name="approval_take_over">我自己来</string>
+diff --git a/app/src/main/res/values-b+zh+Hant/strings.xml b/app/src/main/res/values-b+zh+Hant/strings.xml
+index 673b41b..7dca330 100644
+--- a/app/src/main/res/values-b+zh+Hant/strings.xml
++++ b/app/src/main/res/values-b+zh+Hant/strings.xml
+@@ -1533,6 +1533,8 @@
+ 
+     <!-- PORT-NEW: tool approval cards. -->
+     <string name="approval_title">需要你的批准</string>
++    <string name="approval_preview_expand">展開全文</string>
++    <string name="approval_preview_collapse">收起全文</string>
+     <string name="approval_approve">批准</string>
+     <string name="approval_reject">拒絕</string>
+     <string name="approval_take_over">我自己來</string>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 083c065..aa3523d 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1621,6 +1621,8 @@
+ 
+     <!-- PORT-NEW: tool approval cards. -->
+     <string name="approval_title">Approval required</string>
++    <string name="approval_preview_expand">Expand full text</string>
++    <string name="approval_preview_collapse">Collapse full text</string>
+     <string name="approval_approve">Approve</string>
+     <string name="approval_reject">Reject</string>
+     <string name="approval_take_over">I will do it</string>
+-- 
+2.47.3
+
+From 6cd120edbc1a9ac0924c46cd71a705fb9eb06619 Mon Sep 17 00:00:00 2001
+From: porter <port@local>
+Date: Sun, 8 Nov 2026 14:55:25 +0000
+Subject: [PATCH 18/18] fix(approval): document batch fixes and category
+ revocation assessment
+
+---
+ docs/FIX_BATCH.md | 71 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 71 insertions(+)
+ create mode 100644 docs/FIX_BATCH.md
+
+diff --git a/docs/FIX_BATCH.md b/docs/FIX_BATCH.md
+new file mode 100644
+index 0000000..099f109
+--- /dev/null
++++ b/docs/FIX_BATCH.md
+@@ -0,0 +1,71 @@
++# 审批与卡片缺陷修复
++
++日期：2026-11-08。基线：`c4f8f18`。本批只修改 `/workspace/eta-340` 内的审批策略、回归用例、卡片渲染、三语言文案和本报告。开始时已有的 `docs/PORT_BATCH_2.md`、`gradle.properties` 修改未改动、未纳入提交。
++
++## 1. rm 目标与 cd 绕过
++
++提交：`f1b027d` — `fix(approval): block broad recursive forced deletes after directory changes`
++
++修改 `app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt`。原目标正则只覆盖 `/`、`/*`、`/.`，因此 `cd / && rm -rf *`、`rm -rf ../` 没有进入审批。
++
++现在同时存在 recursive 和 force 参数时，以下任一情况归为 `delete_root`：
++
++- 目标以 `/` 开头，包含 `/tmp/cache` 等绝对路径。
++- 目标为 `*`、`.*`，或包含 `..`，包含 `name..backup` 这样的保守误拦。
++- rm 之前出现目标以 `/` 开头或包含 `..` 的 cd，此后的相对删除目标也拦截。覆盖 `cd /`、`cd ..`、`cd /x`、带选项的 cd 和 shell 包装，不尝试证明最终工作目录安全。
++
++保留长参数、合并短参数、分开的短参数及 `-R` 的识别。`ApprovalPolicyTest.kt` 增加上述回归用例，也保留缺少 recursive/force、普通相对路径、cd 出现在 rm 之后的对照。旧测试中 `rm -rf /tmp/cache` 的安全预期已按新要求移除。
++
++## 2. 命令替换与原始命令兜底
++
++提交：`1411feb` — `fix(approval): detect command substitutions and add raw rm fallback`
++
++修改同一策略文件及 `ApprovalPolicyTest.kt`：
++
++- `shellTokens` 把 `$(`、`)` 和反引号作为分隔符，命令段也在这些分隔符处结束；分隔符处理覆盖双引号内的命令替换，保留原有引号及 shell 包装字符串再分析逻辑。
++- 独立检查原始 command 的正则要求 rm 后面的短参数组同时含 `r`/`R` 和 `f`，随后出现 `/` 或 `/*`。覆盖 `-rf`、`-fr`、`-r -f`、`-f -r`、其他合并短参数和可选的 `--`。绝对路径前缀及引用文本也允许命中，按要求接受误拦。
++- 命中删除风险时优先展示 `delete_root`，组合命令的其他风险仍参与 `classKey`，防止单一类别豁免覆盖组合风险。
++
++回归用例覆盖 `$()`、反引号、双引号、嵌套替换、前后缀、`sh -c`，以及用 `example:rm` 隐藏独立 rm token 的原始文本兜底。长参数加 `../` 的替换用例用于覆盖切词路径，短参数加绝对路径的引用文本用于覆盖正则路径；均有缺少必要参数的对照。
++
++## 3. 审批卡片占用空间
++
++提交：`6e07690` — `fix(ui): collapse approval previews and bound interaction card height`
++
++修改 `app/src/main/kotlin/io/github/mangi/eta/ui/components/ToolInteractionCard.kt` 及 `values`、`values-b+zh+Hans`、`values-b+zh+Hant` 的 `strings.xml`。原实现直接把最多 4096 字符的 command 预览放入正文，导致卡片随文本增长。
++
++现在默认只取前 200 字符，超出追加省略号；文本最多显示 3 行，换行或自动折行超出时使用 `TextOverflow.Ellipsis`。点击整个预览区域（包含“展开全文”/“收起全文”文案）切换展开状态，展开内容在最多 160dp 的区域内滚动。
++
++审批卡高度随内容自适应，上限为当前窗口高度的 50%，且最多 360dp；内容超出时卡内滚动。审批按钮通过 `FlowRow` 自动换行，减少纵向堆叠。提问卡继续使用原来的布局路径。展开状态只存在于渲染层，按 id 和预览内容记忆；函数 API、提交回调、action 值、启用条件及审批状态分支保持原样。已核对 `getValue`/`setValue` import，并补充 `ExperimentalLayoutApi` import 与 opt-in。
++
++“展开全文”展示 API 已提供的全部预览。`ApprovalGate.kt` 的上游 4096 字符截断保持原样，超过此限制的原始命令无法仅靠渲染恢复。
++
++## 4. 类别永久批准与撤销评估（仅报告）
++
++结论：`ApprovalGate.kt` 的 `remember_class` 确实把类别规则写为 `Long.MAX_VALUE`；`ApprovalRuleDao.allows` 仅比较 `expiresAt > now`，类别规则实际上长期有效，30 分钟/24 小时设置只影响操作规则。
++
++当前源码已有全局撤销入口：工具页面 `AgentToolsScreen.kt` 挂载 `ApprovalSettingsCard.kt`，其“清除所有批准与类别规则”按钮调用 `ApprovalRuleDao.clear()`。因此缺少的是逐类撤销及卡片附近的便捷入口，而非完全无法撤销。该入口的设备可见性、实际数据库清除效果本次未运行验证。
++
++| 后续方案 | 涉及文件与改动 | 估算 |
++| --- | --- | --- |
++| 提高现有全清入口的可发现性 | `ui/components/ApprovalSettingsCard.kt` 或 `ToolInteractionCard.kt`，复用现有 `clear()`；需要新文案时修改三语言 `strings.xml`。无需迁移数据库。 | 约 2–4 小时，含反馈文案及基本验收。 |
++| 单独撤销所有永久类别规则 | `data/db/ApprovalRule.kt` 增加按 `class:` 前缀删除的 DAO 方法；`ApprovalSettingsCard.kt` 加按钮与执行反馈；三语言 `strings.xml` 和 DAO 验证。 | 约 0.5–1 个工作日，无需表结构迁移。 |
++| 可读的逐类列表与逐条撤销 | `ApprovalRule.kt` 增加列表、删除、类别/作用域元数据及操作与类别关联；`agent/interaction/ApprovalPolicy.kt` 提供不含密码/command 的作用域说明；`ApprovalGate.kt` 写入这些字段；`EtaDatabase.kt` 升到 28 并注册 27→28 迁移；`ApprovalSettingsCard.kt` 渲染列表与撤销反馈；三语言文案、`EtaDatabaseMigrationTest.kt` 和 DAO/Gate 回归验证。通常约 10–12 个文件。当前 `exportSchema = false`，没有现成的导出 schema 文件需要同步。 | 约 2–3 个工作日，包含迁移、测试及设备验收，前提是构建环境可用。 |
++
++逐类撤销有两个必须处理的边界：
++
++- 当前规则只存哈希和到期时间，无法从旧 `class:` 哈希还原可读类别/作用域，也无法还原操作与类别的关联。迁移应把旧规则标记为“旧类别规则”并提供清除办法，不能假装能恢复元数据。
++- 选择“这类以后不问”时还会写入一条临时 `operationKey` 批准。仅删除类别规则，完全相同的操作可能仍在 30 分钟/24 小时内免问。如果产品要求撤销后立即重新审批，需关联并同时删除该类别的操作规则；旧数据可采用全清。`check` 每次读取 DAO，无规则缓存需要失效，但撤销不追溯中止已经授权或正在执行的步骤。
++
++本批未改永久批准、撤销、DAO 或迁移代码。
++
++## 静态自检与无法确认的点
++
++已完成：
++
++- `python3 scripts/check_port_interactions.py c4f8f18` 通过：核对本批 3 个 Kotlin 文件的 Compose 委托 import、三语言 XML 与 41 个交互资源键、项目 import 声明、既有 20 个迁移未变，以及 26→27 SQL/到期边界。SQL 检查使用内存 SQLite，不代表 Room 验证。
++- 从 Kotlin 源码提取原始 command 正则，使用 Python 检查 11 个命中样例、5 个不命中样例；切词新增分支、保守目标/cd 条件、风险类别组合和回归用例覆盖做了源码核对。这不是 Kotlin/JVM 测试执行。
++- 对照修改前源码，确认卡片函数签名、提交回调、action 顺序和状态条件未变；核对字符/行数/高度限制、点击切换、滚动约束及三语言新增文案。
++- `git diff --check c4f8f18 HEAD` 通过；仅按明确文件路径暂存并分别提交三项修复。
++
++未运行 Gradle、Kotlin 编译、JUnit/Robolectric 或设备 UI。新增 Kotlin 回归用例尚未执行。静态自检不能确认 Kotlin/JVM 正则及类型解析、Compose 实际测量与嵌套滚动、窄屏/横屏/大字体下的按钮可达性、点击与滚动手势、跨 IPC 回复和状态刷新；这些仍需构建环境与设备验证。词法策略及正则仅用于此次明确形态的保守审批，不构成完整 shell 解析或任意命令安全证明。
 -- 
 2.47.3
 
