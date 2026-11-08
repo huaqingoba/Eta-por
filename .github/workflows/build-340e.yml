@@ -85,6 +85,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete eta-340-latest --yes --cleanup-tag || true
-          gh release create eta-340-latest --title "Eta 3.4.0 port latest" --notes "auto build fix2+fix3" src/app/build/outputs/apk/release/*.apk
-          echo done
+          ls -l src/app/build/outputs/apk/release/
+          gh release delete eta-340-latest --repo "${{ github.repository }}" --yes --cleanup-tag || true
+          gh release create eta-340-latest --repo "${{ github.repository }}" --title "Eta 3.4.0 port" --notes "auto build fix2+fix3" src/app/build/outputs/apk/release/*.apk
+          gh release view eta-340-latest --repo "${{ github.repository }}"
