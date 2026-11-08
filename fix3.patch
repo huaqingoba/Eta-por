@@ -1,0 +1,240 @@
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/model/AgentLoop.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/model/AgentLoop.kt
+index 04e3802..ea5491b 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/model/AgentLoop.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/model/AgentLoop.kt
+@@ -7,2 +7,3 @@ import io.github.mangi.eta.agent.roleplay.RoleplayRunContext
+ import io.github.mangi.eta.agent.subagent.AgentSubagentToolCatalog
++import io.github.mangi.eta.core.AndroidAgentLogger
+ import kotlinx.coroutines.Dispatchers
+@@ -66,3 +67,3 @@ internal class AgentLoop(
+     private var runUsage = AgentTokenUsage()
+-    private var allFirstTokensMeasured = true
++    // Each entry is the cumulative run snapshot through this round, not a per-round delta.
+     private val usageByRound = HashMap<Int, AgentTokenUsage>()
+@@ -71,16 +72,3 @@ internal class AgentLoop(
+     private fun accumulateRunUsage(event: AgentEvent.UsageReceived): AgentEvent.UsageReceived {
+-        fun sum(a: Int?, b: Int?): Int? = if (a == null && b == null) null else (a ?: 0) + (b ?: 0)
+-        fun sumMs(a: Long?, b: Long?): Long? = if (a == null && b == null) null else (a ?: 0L) + (b ?: 0L)
+-        val usage = event.usage
+-        allFirstTokensMeasured = allFirstTokensMeasured && usage.firstTokenMs != null
+-        runUsage = usage.copy(
+-            inputTokens = sum(runUsage.inputTokens, usage.inputTokens),
+-            outputTokens = sum(runUsage.outputTokens, usage.outputTokens),
+-            cachedTokens = sum(runUsage.cachedTokens, usage.cachedTokens),
+-            reasoningTokens = sum(runUsage.reasoningTokens, usage.reasoningTokens),
+-            requestDurationMs = sumMs(runUsage.requestDurationMs, usage.requestDurationMs),
+-            firstTokenMs = if (allFirstTokensMeasured) sumMs(runUsage.firstTokenMs, usage.firstTokenMs) else null,
+-            requestCount = sum(runUsage.requestCount, usage.requestCount),
+-            toolDurationMs = runUsage.toolDurationMs,
+-        )
++        runUsage = runUsage.accumulateRequest(event.usage, AndroidAgentLogger)
+         usageByRound[event.round] = runUsage
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentTokenUsage.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentTokenUsage.kt
+index 1156de2..f91000e 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentTokenUsage.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentTokenUsage.kt
+@@ -2,2 +2,4 @@ package io.github.mangi.eta.agent.runtime
+ 
++import io.github.mangi.eta.core.AgentLogger
++
+ internal data class AgentTokenUsage(
+@@ -32,2 +34,39 @@ internal data class AgentTokenUsage(
+ 
++    /** Accumulate one finalized request; merge streaming snapshots before calling this. */
++    fun accumulateRequest(other: AgentTokenUsage, logger: AgentLogger): AgentTokenUsage {
++        val previousInput = inputTokens
++        val incomingCached = other.cachedTokens
++        val cumulativeSnapshot = previousInput != null && previousInput > 0 &&
++            incomingCached != null && incomingCached >= previousInput
++        if (cumulativeSnapshot) {
++            logger.warn(
++                "Token usage may be a provider cumulative snapshot: " +
++                    "cachedTokens=$incomingCached >= accumulatedInputTokens=$previousInput; " +
++                    "using max instead of sum for token counts",
++            )
++        }
++        fun tokens(a: Int?, b: Int?): Int? = when {
++            a == null -> b
++            b == null -> a
++            cumulativeSnapshot -> maxOf(a, b)
++            else -> a + b
++        }
++        fun millis(a: Long?, b: Long?): Long? =
++            if (a == null && b == null) null else (a ?: 0L) + (b ?: 0L)
++        return other.copy(
++            inputTokens = tokens(inputTokens, other.inputTokens),
++            outputTokens = tokens(outputTokens, other.outputTokens),
++            cachedTokens = tokens(cachedTokens, other.cachedTokens),
++            reasoningTokens = tokens(reasoningTokens, other.reasoningTokens),
++            requestDurationMs = millis(requestDurationMs, other.requestDurationMs),
++            // One unmeasured request makes the run's cumulative TTFT unknown thereafter.
++            firstTokenMs = if (other.firstTokenMs != null && (isEmpty || firstTokenMs != null)) {
++                millis(firstTokenMs, other.firstTokenMs)
++            } else null,
++            requestCount = if (requestCount == null && other.requestCount == null) null
++                else (requestCount ?: 0) + (other.requestCount ?: 0),
++            toolDurationMs = toolDurationMs,
++        )
++    }
++
+     val isEmpty: Boolean
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentConversationStore.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentConversationStore.kt
+index db28c38..198e30b 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentConversationStore.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentConversationStore.kt
+@@ -528,3 +528,3 @@ internal object AgentConversationStore {
+                     requestCount = requestCount,
+-                ).takeUnless { it.isEmpty },
++                ).also { it.warnIfInconsistent(AndroidAgentLogger) }.takeUnless { it.isEmpty },
+             )
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentRunMessageProjector.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentRunMessageProjector.kt
+index e0df4b1..3528556 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentRunMessageProjector.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/app/AgentRunMessageProjector.kt
+@@ -6,2 +6,4 @@ import io.github.mangi.eta.agent.runtime.AgentTokenUsage
+ import io.github.mangi.eta.agent.runtime.SearchSuggestionsBudget
++import io.github.mangi.eta.core.AgentLogger
++import io.github.mangi.eta.core.AndroidAgentLogger
+ import io.github.mangi.eta.ui.model.AgentChatMessageUi
+@@ -763,3 +765,3 @@ private const val MAX_TOOL_RESULT_PREVIEW_CHARS = 48
+ 
+-internal fun AgentTokenUsage.toUi(): TokenUsageUi =
++internal fun AgentTokenUsage.toUi(logger: AgentLogger = AndroidAgentLogger): TokenUsageUi =
+     TokenUsageUi(
+@@ -777,2 +779,2 @@ internal fun AgentTokenUsage.toUi(): TokenUsageUi =
+         requestCount = requestCount,
+-    )
++    ).also { it.warnIfInconsistent(logger) }
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/components/AgentChatInputBar.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/components/AgentChatInputBar.kt
+index f458789..95037d3 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/components/AgentChatInputBar.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/components/AgentChatInputBar.kt
+@@ -347,5 +347,4 @@ internal fun AgentChatInputBar(
+                     Text(
+-                        text = contextUsage.latestUsage.generationTokensPerSecond?.let {
+-                            "${it.roundToInt()} tok/s"
+-                        } ?: stringResource(R.string.token_panel_title),
++                        text = contextUsage.latestUsage.formattedGenerationTokensPerSecond
++                            ?: stringResource(R.string.token_panel_title),
+                         style = MiuixTheme.textStyles.footnote2,
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/components/TokenUsagePanel.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/components/TokenUsagePanel.kt
+index 0e23304..c082e43 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/components/TokenUsagePanel.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/components/TokenUsagePanel.kt
+@@ -46,4 +46,4 @@ internal fun TokenUsagePanelContent(usage: TokenUsageUi?) {
+     val rows = ArrayList<Pair<String, String>>(8)
+-    usage?.cacheHitRate?.let { rate ->
+-        rows += cacheHitLabel to "${(rate * 100f + 0.5f).toInt()}%"
++    usage?.formattedCacheHitRate?.let { rate ->
++        rows += cacheHitLabel to rate
+     }
+@@ -54,4 +54,4 @@ internal fun TokenUsagePanelContent(usage: TokenUsageUi?) {
+     usage?.toolDurationMs?.let { rows += toolDurationLabel to formatDuration(it) }
+-    usage?.firstTokenAverageMs?.let { rows += ttftLabel to formatDuration(it) }
+-    usage?.generationTokensPerSecond?.let { rows += tpsLabel to "${roundToInt(it)} tok/s" }
++    usage?.firstTokenMs?.let { rows += ttftLabel to formatDuration(it) }
++    usage?.formattedGenerationTokensPerSecond?.let { rows += tpsLabel to it }
+ 
+@@ -161,3 +161 @@ private fun formatDuration(millis: Long): String {
+ }
+-
+-private fun roundToInt(value: Double): Long = kotlin.math.round(value).toLong()
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/ui/model/AgentChatUiState.kt b/app/src/main/kotlin/io/github/mangi/eta/ui/model/AgentChatUiState.kt
+index 03a8cbd..daab330 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/ui/model/AgentChatUiState.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/ui/model/AgentChatUiState.kt
+@@ -7,4 +7,6 @@ import io.github.mangi.eta.agent.roleplay.RoleplayBinding
+ import io.github.mangi.eta.agent.roleplay.RoleplayMessageState
++import io.github.mangi.eta.core.AgentLogger
+ import io.github.mangi.eta.data.model.ReasoningEffort
+ import io.github.mangi.eta.ui.components.RoleplayChatUi
++import java.util.Locale
+ 
+@@ -118,3 +120,3 @@ data class TokenUsageUi(
+ ) {
+-    /** Request average includes time to the first token, but excludes tools and earlier retries. */
++    /** Run average includes cumulative TTFT, but excludes tools and failed retries. */
+     val averageTokensPerSecond: Double?
+@@ -142,2 +144,9 @@ data class TokenUsageUi(
+ 
++    /** Reserve 100% for truly complete hits, including when Float precision rounds up. */
++    internal val formattedCacheHitRate: String?
++        get() = cacheHitRate?.let { rate ->
++            if (uncachedInputTokens == 0 && inputTokens == cacheReadTokens) "100%" else
++                String.format(Locale.getDefault(), "%.1f%%", (rate * 100f).coerceAtMost(99.9f))
++        }
++
+     /**
+@@ -152,6 +161,9 @@ data class TokenUsageUi(
+             val total = requestDurationMs?.takeIf { it > 0 } ?: return null
+-            val ttft = (firstTokenMs ?: return null).coerceIn(0L, (total - 1).coerceAtLeast(0))
+-            return tokens * 1000.0 / (total - ttft).coerceAtLeast(1)
++            val ttft = firstTokenMs?.takeIf { it >= 0 && it < total } ?: return null
++            return tokens * 1000.0 / (total - ttft)
+         }
+ 
++    internal val formattedGenerationTokensPerSecond: String?
++        get() = generationTokensPerSecond?.let { String.format(Locale.getDefault(), "%.1f tok/s", it) }
++
+     /** 首 token 平均延迟：本次 run 累计 TTFT ÷ 请求数。 */
+@@ -171,2 +183,19 @@ data class TokenUsageUi(
+ 
++    /** Check the displayed total and normalized input + output without correcting either. */
++    internal fun warnIfInconsistent(logger: AgentLogger) {
++        val input = inputTokens ?: return
++        val output = outputTokens ?: return
++        val uncached = uncachedInputTokens ?: return
++        val cacheRead = cacheReadTokens ?: 0
++        val total = totalBilledTokens ?: return
++        val normalizedTotal = input.toLong() + output
++        val parts = uncached.toLong() + cacheRead + output
++        if (parts != total.toLong() || parts != normalizedTotal) {
++            logger.warn(
++                "Token usage inconsistent: uncached=$uncached cacheRead=$cacheRead " +
++                    "output=$output total=$total normalizedTotal=$normalizedTotal",
++            )
++        }
++    }
++
+diff --git a/app/src/main/res/values-b+zh+Hans/strings.xml b/app/src/main/res/values-b+zh+Hans/strings.xml
+index c51be14..7285671 100644
+--- a/app/src/main/res/values-b+zh+Hans/strings.xml
++++ b/app/src/main/res/values-b+zh+Hans/strings.xml
+@@ -1571,6 +1571,6 @@
+     <string name="token_panel_cache_read">缓存读取</string>
+-    <string name="token_panel_output">输出</string>
+-    <string name="token_panel_model_duration">模型用时</string>
++    <string name="token_panel_output">输出（累计）</string>
++    <string name="token_panel_model_duration">模型用时（累计）</string>
+     <string name="token_panel_tool_duration">工具调用用时</string>
+-    <string name="token_panel_ttft">首 token 延迟（TTFT，平均）</string>
++    <string name="token_panel_ttft">首 token 延迟（TTFT，累计）</string>
+     <string name="token_panel_tps">输出速度（TPS）</string>
+diff --git a/app/src/main/res/values-b+zh+Hant/strings.xml b/app/src/main/res/values-b+zh+Hant/strings.xml
+index d3c9085..aa21b09 100644
+--- a/app/src/main/res/values-b+zh+Hant/strings.xml
++++ b/app/src/main/res/values-b+zh+Hant/strings.xml
+@@ -1502,6 +1502,6 @@
+     <string name="token_panel_cache_read">快取讀取</string>
+-    <string name="token_panel_output">輸出</string>
+-    <string name="token_panel_model_duration">模型用時</string>
++    <string name="token_panel_output">輸出（累計）</string>
++    <string name="token_panel_model_duration">模型用時（累計）</string>
+     <string name="token_panel_tool_duration">工具呼叫用時</string>
+-    <string name="token_panel_ttft">首 token 延遲（TTFT，平均）</string>
++    <string name="token_panel_ttft">首 token 延遲（TTFT，累計）</string>
+     <string name="token_panel_tps">輸出速度（TPS）</string>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 1b2b5e1..619c506 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1590,6 +1590,6 @@
+     <string name="token_panel_cache_read">Cache reads</string>
+-    <string name="token_panel_output">Output</string>
+-    <string name="token_panel_model_duration">Model time</string>
++    <string name="token_panel_output">Output (total)</string>
++    <string name="token_panel_model_duration">Model time (total)</string>
+     <string name="token_panel_tool_duration">Tool time</string>
+-    <string name="token_panel_ttft">First token (TTFT, average)</string>
++    <string name="token_panel_ttft">First token (TTFT, total)</string>
+     <string name="token_panel_tps">Output speed (TPS)</string>
