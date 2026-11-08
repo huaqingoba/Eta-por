@@ -1,0 +1,74 @@
+name: Build 340 Port
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout patch repo
+        uses: actions/checkout@v4
+        with:
+          path: patches
+
+      - name: Checkout upstream 3.4.0
+        uses: actions/checkout@v4
+        with:
+          repository: Mangi-11/Eta
+          ref: e90922a4490389f524a10c6acebbcca336883935
+          path: src
+
+      - name: Apply port patches
+        run: |
+          cd src
+          git config user.email ci@local
+          git config user.name ci
+          git am --3way ../patches/eta-port-340.patch
+          git log --oneline -3
+
+      - name: Fix Compose delegate imports
+        run: |
+          cd src
+          for f in app/src/main/kotlin/io/github/mangi/eta/ui/components/ImagePreviewOverlay.kt app/src/main/kotlin/io/github/mangi/eta/ui/screens/terminal/WorkspaceBrowserSheet.kt ; do
+            python3 -c "import sys;p=sys.argv[1];s=open(p,encoding='utf-8').read();s=s if 'runtime.getValue' in s else s.replace('import androidx.compose.runtime.remember','import androidx.compose.runtime.getValue\nimport androidx.compose.runtime.setValue\nimport androidx.compose.runtime.remember',1);open(p,'w',encoding='utf-8').write(s);print('ok '+p)" "$f"
+          done
+          git diff --stat
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Android SDK 37 + NDK
+        run: |
+          SDK="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDK" --licenses > /dev/null 2>&1 || true
+          "$SDK" --channel=3 "platforms;android-37.0" "build-tools;37.0.0" "ndk;30.0.16248370" > /dev/null
+          echo SDK ready
+
+      - name: Generate keystore
+        run: |
+          keytool -genkeypair -keystore "$RUNNER_TEMP/eta.jks" -storetype JKS \
+            -alias eta -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass eta123456 -keypass eta123456 \
+            -dname "CN=Eta Personal, O=Self, C=CN"
+
+      - name: Build release APK
+        working-directory: src
+        env:
+          ETA_RELEASE_STORE_FILE: ${{ runner.temp }}/eta.jks
+          ETA_RELEASE_STORE_PASSWORD: eta123456
+          ETA_RELEASE_KEY_ALIAS: eta
+          ETA_RELEASE_KEY_PASSWORD: eta123456
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon --no-configuration-cache :app:assembleRelease
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: eta-340-port-apk
+          path: src/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
