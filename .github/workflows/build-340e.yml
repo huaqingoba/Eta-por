@@ -3,6 +3,9 @@ name: Build 340 Port E
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -77,3 +80,11 @@ jobs:
           name: eta-340-port-apk
           path: src/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
+
+      - name: Publish release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete eta-340-latest --yes --cleanup-tag || true
+          gh release create eta-340-latest --title "Eta 3.4.0 port latest" --notes "auto build fix2+fix3" src/app/build/outputs/apk/release/*.apk
+          echo done
