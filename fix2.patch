@@ -1,0 +1,216 @@
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/display/dashboard/AgentLiveActivity.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/display/dashboard/AgentLiveActivity.kt
+index 4b0ad97..a40f9dd 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/display/dashboard/AgentLiveActivity.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/display/dashboard/AgentLiveActivity.kt
+@@ -66,2 +66,3 @@ internal object AgentLiveActivityBridge {
+             is AgentOverlayStatus.RunningTool, is AgentOverlayStatus.HostedToolRunning -> context.getString(R.string.execution_chip_running)
++            AgentOverlayStatus.WaitingUser -> context.getString(R.string.overlay_waiting_user)
+             AgentOverlayStatus.Paused -> context.getString(R.string.overlay_paused)
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalGate.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalGate.kt
+index 56a0bd8..331fdbc 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalGate.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalGate.kt
+@@ -31,9 +31,15 @@ internal class ApprovalGate(
+     private val resumeGui: () -> Unit,
++    private val currentTimeMillis: () -> Long = System::currentTimeMillis,
+ ) {
+     private val rules get() = EtaDatabase.get(context).approvalRuleDao()
++    // Separate from permanent remember_class rules, including for unknown controls.
++    private fun temporaryClassKey(risk: ApprovalRisk) = "${risk.classKey}:temporary"
+ 
+     fun check(risk: ApprovalRisk) {
++        // Payments/orders must ignore every stored rule, including approvals from older builds.
++        if (risk.financial) throw ApprovalRequired(risk)
+         val allowed = runBlocking {
+-            val now = System.currentTimeMillis()
+-            rules.allows(risk.operationKey, now) || (risk.allowRememberClass && rules.allows(risk.classKey, now))
++            val now = currentTimeMillis()
++            rules.allows(risk.operationKey, now) || (risk.allowRememberClass && rules.allows(risk.classKey, now)) ||
++                (risk.gui && rules.allows(temporaryClassKey(risk), now))
+         }
+@@ -68,7 +74,11 @@ internal class ApprovalGate(
+                 else -> {
+-                    runBlocking {
+-                        val now = System.currentTimeMillis()
+-                        rules.prune(now)
+-                        rules.put(ApprovalRule(risk.operationKey, now + ApprovalSettings.duration(context)))
+-                        if (reply.optString("action") == "remember_class") rules.put(ApprovalRule(risk.classKey, Long.MAX_VALUE))
++                    if (!risk.financial) {
++                        runBlocking {
++                            val now = currentTimeMillis()
++                            val expiresAt = now + ApprovalSettings.duration(context)
++                            rules.prune(now)
++                            rules.put(ApprovalRule(risk.operationKey, expiresAt))
++                            if (risk.gui) rules.put(ApprovalRule(temporaryClassKey(risk), expiresAt))
++                            if (reply.optString("action") == "remember_class") rules.put(ApprovalRule(risk.classKey, Long.MAX_VALUE))
++                        }
+                     }
+@@ -76,3 +86,4 @@ internal class ApprovalGate(
+                     if (risk.gui) return result(false, "APPROVED_REOBSERVE_REQUIRED",
+-                        "Approved. The user visited Eta to answer. Restore the target app/display and observe_screen again before retrying the same operation; its approval is remembered.")
++                        "Approved. The user visited Eta to answer. Restore the target app/display and observe_screen again before retrying the same operation; " +
++                            if (risk.financial) "financial operations require fresh approval." else "its approval is remembered.")
+                     return null
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+index 8c91a7e..3a6bfc4 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/interaction/ApprovalPolicy.kt
+@@ -2,2 +2,3 @@ package io.github.mangi.eta.agent.interaction
+ 
++import io.github.mangi.eta.agent.virtualdisplay.CanvasRoutingPolicy
+ import org.json.JSONArray
+@@ -107,2 +108,8 @@ internal object ApprovalPolicy {
+ 
++    fun guiScope(packageName: String?, displayId: Int): String {
++        // Virtual display IDs change whenever the canvas is recreated.
++        val display = if (CanvasRoutingPolicy.isVirtualDisplay(displayId)) "virtual" else "main"
++        return "$packageName:display=$display"
++    }
++
+     fun gui(name: String, args: JSONObject, target: String, scope: String, labels: String,
+@@ -114,3 +121,3 @@ internal object ApprovalPolicy {
+             Regex("验证码|驗證碼|verification\\s*code|\\botp\\b", RegexOption.IGNORE_CASE).containsMatchIn(labels) -> "verification"
+-            !known -> "unknown_control"
++            !known && labels.isBlank() -> "unknown_control"
+             else -> return null
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayState.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayState.kt
+index 3dc2816..36e86be 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayState.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayState.kt
+@@ -3,2 +3,3 @@ package io.github.mangi.eta.agent.overlay
+ import androidx.compose.runtime.Immutable
++import io.github.mangi.eta.agent.interaction.ToolInteraction
+ import io.github.mangi.eta.agent.runtime.AgentEvent
+@@ -68,5 +69,5 @@ private fun AgentOverlayState.projectEvent(event: AgentEvent): AgentOverlayState
+ 
+-    // PORT-NEW: a pending card pauses the visible run without granting GUI resume approval.
+-    is AgentEvent.ToolInteractionChanged -> if (io.github.mangi.eta.agent.interaction.ToolInteraction.parse(event.snapshotJson)?.optString("state") in setOf("waiting", "taken_over")) {
+-        copy(phase = AgentOverlayPhase.PAUSED, status = AgentOverlayStatus.Paused)
++    // 卡片等待与用户手动暂停分开，收尾事件才能继续投影运行状态。
++    is AgentEvent.ToolInteractionChanged -> if (ToolInteraction.parse(event.snapshotJson)?.optString("state") in setOf("waiting", "taken_over")) {
++        running(AgentOverlayStatus.WaitingUser, event.round)
+     } else running(AgentOverlayStatus.Reasoning, event.round)
+@@ -111,3 +112,3 @@ private fun AgentOverlayState.running(status: AgentOverlayStatus, round: Int) =
+ 
+-/** 正在执行工具或输出回答时，后台的请求、重试与压缩事件不打断当前文字。 */
++/** 执行工具、输出回答或等待用户时，后台的请求、重试与压缩事件不打断当前文字。 */
+ private fun AgentOverlayState.thinkingUnlessWorking(): AgentOverlayState = when (status) {
+@@ -116,2 +117,3 @@ private fun AgentOverlayState.thinkingUnlessWorking(): AgentOverlayState = when
+     AgentOverlayStatus.GeneratingAnswer,
++    AgentOverlayStatus.WaitingUser,
+     AgentOverlayStatus.Paused,
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayText.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayText.kt
+index 1226535..c91a540 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayText.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/overlay/AgentOverlayText.kt
+@@ -19,2 +19,3 @@ internal sealed interface AgentOverlayStatus {
+     data object Stopping : AgentOverlayStatus
++    data object WaitingUser : AgentOverlayStatus
+     data object Paused : AgentOverlayStatus
+@@ -41,2 +42,3 @@ internal fun AgentOverlayStatus.localizedText(resources: Resources): String = wh
+     AgentOverlayStatus.Stopping -> resources.getString(R.string.overlay_stopping)
++    AgentOverlayStatus.WaitingUser -> resources.getString(R.string.overlay_waiting_user)
+     AgentOverlayStatus.Paused -> resources.getString(R.string.overlay_paused)
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentRuntimeService.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentRuntimeService.kt
+index e30c8e1..a9519b7 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentRuntimeService.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/runtime/AgentRuntimeService.kt
+@@ -41,2 +41,3 @@ import io.github.mangi.eta.agent.accessibility.AgentAccessibilityService
+ import io.github.mangi.eta.agent.device.RootAccess
++import io.github.mangi.eta.agent.interaction.ToolInteraction
+ import io.github.mangi.eta.agent.media.AgentImageCodec
+@@ -542,3 +543,15 @@ internal class AgentRuntimeService : Service(), LifecycleOwner, SavedStateRegist
+                 run.overlayState = run.overlayState.applyEvent(event)
+-                if (displayedRun === run && ownsGui && !run.session.isTerminal) {
++                val interactionResolved = event is AgentEvent.ToolInteractionChanged &&
++                    ToolInteraction.parse(event.snapshotJson)?.optString("state") in
++                    setOf("approved", "rejected", "completed_by_user", "cancelled")
++                // 同一浮窗 run 的卡片收尾不需要重新获得 GUI；真实用户暂停仍须显式恢复。
++                val restoreDisplayedInteraction = displayedRun === run && interactionResolved &&
++                    !guiState.userPaused && run.guiStatus != GuiControlStatus.UserPaused && !run.session.isTerminal
++                if (restoreDisplayedInteraction) {
++                    run.overlayState = run.overlayState.copy(
++                        phase = AgentOverlayPhase.RUNNING,
++                        status = AgentOverlayStatus.Reasoning,
++                    )
++                }
++                if (displayedRun === run && (ownsGui || restoreDisplayedInteraction) && !run.session.isTerminal) {
+                     state.value = run.overlayState
+diff --git a/app/src/main/kotlin/io/github/mangi/eta/agent/tool/AgentLocalTools.kt b/app/src/main/kotlin/io/github/mangi/eta/agent/tool/AgentLocalTools.kt
+index 3ad7ba1..31b3928 100644
+--- a/app/src/main/kotlin/io/github/mangi/eta/agent/tool/AgentLocalTools.kt
++++ b/app/src/main/kotlin/io/github/mangi/eta/agent/tool/AgentLocalTools.kt
+@@ -364,8 +364,6 @@ internal class AgentLocalTools(
+         }
+-        val labels = candidates.joinToString(" ") { "${it.text} ${it.desc} ${it.hint} ${it.viewId}" }
+-        val targetIdentity = candidates.joinToString("|") { "${it.viewId}:${it.className}:${it.bounds}:${if (it.password || it.editable) it.hint else it.text}" }
+-            .ifBlank { "${target?.x},${target?.y}" }
+-        return policy.gui(call.name, args, targetIdentity, "${live?.packageName ?: previous?.packageName}:display=$display",
+-            labels, candidates.any { it.password },
+-            candidates.any { it.password || it.text.isNotBlank() || it.desc.isNotBlank() || it.hint.isNotBlank() },
++        val evidence = guiApprovalEvidence(live?.nodes.orEmpty(), candidates)
++        val targetIdentity = guiApprovalTargetIdentity(candidates)
++        return policy.gui(call.name, args, targetIdentity, policy.guiScope(live?.packageName ?: previous?.packageName, display),
++            evidence.labels, evidence.password, evidence.known,
+             live?.nodes.orEmpty().filterNot { it.password || it.editable }.joinToString("|") { "${it.text}:${it.desc}" })
+@@ -1782,2 +1780,36 @@ internal class AgentLocalTools(
+ 
++internal data class GuiApprovalEvidence(val labels: String, val password: Boolean, val known: Boolean)
++
++internal fun guiApprovalTargetIdentity(candidates: List<RootShellDeviceController.UiNode>): String {
++    fun identity(node: RootShellDeviceController.UiNode) =
++        "${node.viewId}:${node.className}:${if (node.password || node.editable) "" else node.text}:${node.desc}:${node.hint}"
++    // Labels break ties for repeated view IDs; neither bounds nor observation order is identity.
++    return candidates.sortedWith(compareBy<RootShellDeviceController.UiNode>(
++        { it.className }, { it.viewId }, ::identity,
++    )).joinToString("|", transform = ::identity).ifBlank { "untargeted" }
++}
++
++internal fun guiApprovalEvidence(
++    nodes: List<RootShellDeviceController.UiNode>,
++    candidates: List<RootShellDeviceController.UiNode>,
++): GuiApprovalEvidence {
++    // Container labels often live on descendants whose bounds do not cover the tapped point.
++    val descendants = nodes.filter { child ->
++        candidates.any { parent ->
++            parent.bounds.contains(child.bounds) &&
++                child.bounds.width().toLong() * child.bounds.height() <
++                parent.bounds.width().toLong() * parent.bounds.height()
++        }
++    }
++    val evidenceNodes = (candidates + descendants).distinct()
++    return GuiApprovalEvidence(
++        labels = evidenceNodes.joinToString(" ") { "${it.text} ${it.desc} ${it.hint} ${it.viewId}" },
++        password = evidenceNodes.any { it.password },
++        // No hit is a blank-area action; still let the policy check sensitive labels first.
++        known = candidates.isEmpty() || evidenceNodes.any {
++            it.password || it.text.isNotBlank() || it.desc.isNotBlank() || it.hint.isNotBlank()
++        },
++    )
++}
++
+ private val AFTER_ACTION_OPTIONS = AgentScreenObservationContract.Options(
+diff --git a/app/src/main/res/values-b+zh+Hans/strings.xml b/app/src/main/res/values-b+zh+Hans/strings.xml
+index 29a9373..c51be14 100644
+--- a/app/src/main/res/values-b+zh+Hans/strings.xml
++++ b/app/src/main/res/values-b+zh+Hans/strings.xml
+@@ -290,2 +290,3 @@
+   <string name="overlay_stopping">停止中</string>
++  <string name="overlay_waiting_user">等待确认</string>
+   <string name="overlay_paused">已暂停</string>
+diff --git a/app/src/main/res/values-b+zh+Hant/strings.xml b/app/src/main/res/values-b+zh+Hant/strings.xml
+index 7dca330..d3c9085 100644
+--- a/app/src/main/res/values-b+zh+Hant/strings.xml
++++ b/app/src/main/res/values-b+zh+Hant/strings.xml
+@@ -278,2 +278,3 @@
+   <string name="overlay_stopping">停止中</string>
++  <string name="overlay_waiting_user">等待確認</string>
+   <string name="overlay_paused">已暫停</string>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index aa3523d..1b2b5e1 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -257,2 +257,3 @@
+   <string name="overlay_stopping">Stopping</string>
++  <string name="overlay_waiting_user">Waiting for confirmation</string>
+   <string name="overlay_paused">Paused</string>
