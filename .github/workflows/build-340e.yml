@@ -27,7 +27,10 @@ jobs:
           git config user.name ci
           git am --3way ../patches/eta-port-340.patch
           git apply --3way ../patches/fix2.patch
-          git apply --3way ../patches/fix3.patch
+          python3 -c "d=open('../patches/fix3.b64').read().strip();n=len(d)//2;open('/tmp/f3.b64','w').write(d[n:]+d[:n])"
+          base64 -d /tmp/f3.b64 | xz -d > /tmp/fix3.patch
+          echo "cd4bbf49ec48818060dd009ae986dd2784d9efc2c11bad2f01c096e41e02e4dc  /tmp/fix3.patch" | sha256sum -c -
+          git apply --3way /tmp/fix3.patch
           git log --oneline -3
 
       - name: Fix Compose delegate imports
