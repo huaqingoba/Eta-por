@@ -39,7 +39,7 @@ jobs:
           git add -A
           git commit -m "chore(ci): apply fix2+fix3 before fix4"
           python3 ../patches/apply_payload.py ../patches/fix4.b64 /tmp/fix4.patch
-          git apply /tmp/fix4.patch
+          git apply --exclude='*/src/test/*' /tmp/fix4.patch
           git add -A
           git commit -m "feat(usage): live tok/s with 3s sliding window"
           git log --oneline -4
