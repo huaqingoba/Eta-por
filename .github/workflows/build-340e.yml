@@ -42,6 +42,10 @@ jobs:
           git apply --exclude='*/src/test/*' /tmp/fix4.patch
           git add -A
           git commit -m "feat(usage): live tok/s with 3s sliding window"
+          python3 ../patches/apply_payload.py ../patches/fix5b.b64 /tmp/fix5b.patch f10ce62de08526ca60ab12f9fbceeb85896d7ee9ac637a5104d11f41ebcd473c
+          git apply /tmp/fix5b.patch
+          git add -A
+          git commit -m "fix(usage): address review findings on live rate"
           git log --oneline -4
 
       - name: Fix Compose delegate imports
