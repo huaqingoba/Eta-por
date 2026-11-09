@@ -36,9 +36,11 @@ jobs:
           git apply --3way ../patches/fix2.patch
           python3 ../patches/apply_payload.py ../patches/fix3.b64 /tmp/fix3.patch cd4bbf49ec48818060dd009ae986dd2784d9efc2c11bad2f01c096e41e02e4dc
           git apply --3way /tmp/fix3.patch
+          git add -A
+          git commit -m "chore(ci): apply fix2+fix3 before fix4"
           python3 ../patches/apply_payload.py ../patches/fix4.b64 /tmp/fix4.patch
           git am --3way /tmp/fix4.patch
-          git log --oneline -3
+          git log --oneline -4
 
       - name: Fix Compose delegate imports
         run: |
