@@ -46,7 +46,11 @@ jobs:
           git apply /tmp/fix5b.patch
           git add -A
           git commit -m "fix(usage): address review findings on live rate"
-          git log --oneline -4
+          python3 ../patches/apply_payload.py ../patches/upstream1.b64 /tmp/up1.patch 484ef827f05e644e5edc89a08711999d4fbbdad154e0da5333b222963469076b
+          git apply --exclude='*/src/test/*' /tmp/up1.patch
+          git add -A
+          git commit -m "feat: port upstream share/result-formatter/virtualscreen fixes"
+          git log --oneline -5
 
       - name: Fix Compose delegate imports
         run: |
