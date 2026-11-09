@@ -50,7 +50,11 @@ jobs:
           git apply --exclude='*/src/test/*' /tmp/up1.patch
           git add -A
           git commit -m "feat: port upstream share/result-formatter/virtualscreen fixes"
-          git log --oneline -5
+          python3 ../patches/apply_payload.py ../patches/up2.b64 /tmp/up2.patch 2c6001f835173c066f9e018946589f16ca0f982ce8cefd6db087c0d5d68cc29d
+          git apply --exclude='*/src/test/*' /tmp/up2.patch
+          git add -A
+          git commit -m "feat: port upstream v3.4.x (7 commits) and restore ported entry points"
+          git log --oneline -6
 
       - name: Fix Compose delegate imports
         run: |
