@@ -6,6 +6,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: eta-340-build
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,10 +34,10 @@ jobs:
           git config user.name ci
           git am --3way ../patches/eta-port-340.patch
           git apply --3way ../patches/fix2.patch
-          python3 -c "d=open('../patches/fix3.b64').read().strip();n=len(d)//2;open('/tmp/f3.b64','w').write(d[n:]+d[:n])"
-          base64 -d /tmp/f3.b64 | xz -d > /tmp/fix3.patch
-          echo "cd4bbf49ec48818060dd009ae986dd2784d9efc2c11bad2f01c096e41e02e4dc  /tmp/fix3.patch" | sha256sum -c -
+          python3 ../patches/apply_payload.py ../patches/fix3.b64 /tmp/fix3.patch cd4bbf49ec48818060dd009ae986dd2784d9efc2c11bad2f01c096e41e02e4dc
           git apply --3way /tmp/fix3.patch
+          python3 ../patches/apply_payload.py ../patches/fix4.b64 /tmp/fix4.patch
+          git am --3way /tmp/fix4.patch
           git log --oneline -3
 
       - name: Fix Compose delegate imports
@@ -87,5 +91,5 @@ jobs:
         run: |
           ls -l src/app/build/outputs/apk/release/
           gh release delete eta-340-latest --repo "${{ github.repository }}" --yes --cleanup-tag || true
-          gh release create eta-340-latest --repo "${{ github.repository }}" --title "Eta 3.4.0 port" --notes "auto build fix2+fix3" src/app/build/outputs/apk/release/*.apk
+          gh release create eta-340-latest --repo "${{ github.repository }}" --title "Eta 3.4.0 port" --notes "auto build fix2+fix3+fix4" src/app/build/outputs/apk/release/*.apk
           gh release view eta-340-latest --repo "${{ github.repository }}"
